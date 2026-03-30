@@ -1,0 +1,12 @@
+[project]
+name = "ansible-easy"
+version = "0.1.0"
+description = "package to make creating ansible workflows easy"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "pydantic>=2.12.5",
+]
+
+[project.scripts]
+main = "ansible_easy.main:main"
