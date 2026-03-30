@@ -1,6 +1,5 @@
+from ansible_easy.scripts.log import logger
+
+
 def main():
-    print("Hello from ansible-easy!")
-
-
-if __name__ == "__main__":
-    main()
+    logger.info("Hello from ansible-easy!")
