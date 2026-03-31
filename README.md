@@ -66,6 +66,7 @@ playbooks:
     mapping:
       - ansible_variable_name: APP_ROLE
         config_variable_name: app_role
+        dir_path: false
 ```
 
 ### Supported field types
@@ -88,10 +89,11 @@ playbooks:
 
 ### Variable mapping
 
-The `mapping` block maps your config fields to Ansible `--extra-vars`. Dot notation is supported for nested fields:
+The `mapping` block maps your config fields to Ansible `--extra-vars`. To be able to pass relative paths as input active `dir_path`. Dot notation is supported for nested fields:
 ```yaml
 - ansible_variable_name: HOST
   config_variable_name: connection.host
+  dir_path: false
 ```
 
 ## Logging

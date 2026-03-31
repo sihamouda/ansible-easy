@@ -140,10 +140,13 @@ def _check_playbook_mapping(playbook: dict):
             raise ParseStructureException(
                 f"playbook '{playbook['name']}' mapping entry is missing 'config_variable_name'"
             )
+        if "dir_path" in entry and type(entry["dir_path"]) is not bool:
+            raise ParseStructureException(
+                f"playbook '{playbook['name']}' mapping entry 'dir_path' should be bool"
+            )
 
 
 def _parse_playbook(playbook: dict) -> dict:
-
     _check_playbook_name(playbook)
     _check_playbook_condition(playbook)
     _check_playbook_mapping(playbook)
@@ -151,7 +154,14 @@ def _parse_playbook(playbook: dict) -> dict:
     return {
         "name": playbook["name"],
         "condition": playbook["condition"],
-        "mapping": playbook["mapping"],
+        "mapping": [
+            {
+                "ansible_variable_name": entry["ansible_variable_name"],
+                "config_variable_name": entry["config_variable_name"],
+                "dir_path": entry.get("dir_path", False),
+            }
+            for entry in playbook["mapping"]
+        ],
     }
 
 

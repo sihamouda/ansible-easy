@@ -1,25 +1,6 @@
+import os
 import ansible_runner
 from ansible_easy.scripts.log import logger
-
-
-# def _handle_ansible_event(event: dict):
-#     event_type = event.get("event", "")
-#     stdout = event.get("stdout", "").strip()
-
-#     if not stdout:
-#         return
-
-#     match event_type:
-#         case "runner_on_ok":
-#             logger.info(stdout)
-#         case "runner_on_failed":
-#             logger.error(stdout)
-#         case "runner_on_skipped":
-#             logger.debug(stdout)
-#         case "runner_on_unreachable":
-#             logger.error(stdout)
-#         case _:
-#             logger.debug(stdout)
 
 
 def _resolve_field(config: dict, config_variable_name: str):
@@ -44,9 +25,10 @@ def _evaluate_condition(config: dict, condition: dict) -> bool:
 def _build_ansible_vars(config: dict, mapping: list[dict]) -> dict:
     vars = {}
     for entry in mapping:
-        vars[entry["ansible_variable_name"]] = _resolve_field(
-            config, entry["config_variable_name"]
-        )
+        value = _resolve_field(config, entry["config_variable_name"])
+        if entry.get("dir_path") and isinstance(value, str):
+            value = f"{os.getcwd()}/{value}"
+        vars[entry["ansible_variable_name"]] = value
     return vars
 
 
