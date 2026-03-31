@@ -1,6 +1,6 @@
 [project]
 name = "ansible-easy"
-version = "0.0.0"
+dynamic = ["version"] 
 description = "package to make creating ansible workflows easy"
 readme = "README.md"
 requires-python = ">=3.12"
@@ -16,6 +16,9 @@ dependencies = [
 
 [project.scripts]
 ansible-easy = "ansible_easy.main:cli"
+
+[tool.hatch.version]
+path = "ansible_easy/__init__.py"
 
 [tool.hatch.build.targets.wheel]
 packages = ["ansible_easy"]
