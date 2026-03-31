@@ -9,6 +9,7 @@ dependencies = [
     "ansible-lint>=26.3.0",
     "ansible-runner>=2.4.3",
     "colorlog>=6.10.1",
+    "psycopg2>=2.9.11",
     "pydantic>=2.12.5",
     "pydantic-settings>=2.13.1",
     "pyyaml>=6.0.3",

@@ -1,4 +1,25 @@
 import ansible_runner
+from ansible_easy.scripts.log import logger
+
+
+# def _handle_ansible_event(event: dict):
+#     event_type = event.get("event", "")
+#     stdout = event.get("stdout", "").strip()
+
+#     if not stdout:
+#         return
+
+#     match event_type:
+#         case "runner_on_ok":
+#             logger.info(stdout)
+#         case "runner_on_failed":
+#             logger.error(stdout)
+#         case "runner_on_skipped":
+#             logger.debug(stdout)
+#         case "runner_on_unreachable":
+#             logger.error(stdout)
+#         case _:
+#             logger.debug(stdout)
 
 
 def _resolve_field(config: dict, config_variable_name: str):
@@ -30,10 +51,47 @@ def _build_ansible_vars(config: dict, mapping: list[dict]) -> dict:
 
 
 def _run_ansible(playbook_name: str, vars: dict, playbooks_dir: str):
+
+    def _handle_ansible_event(event: dict):
+        event_type = event.get("event", "")
+        stdout = event.get("stdout", "").strip()
+        task_name = event.get("event_data", {}).get("task", "")
+
+        if not stdout:
+            return
+
+        prefix = (
+            f"[{playbook_name}] [{task_name}]" if task_name else f"[{playbook_name}]"
+        )
+
+        match event_type:
+            case "runner_on_ok":
+                changed = (
+                    event.get("event_data", {}).get("res", {}).get("changed", False)
+                )
+                if changed:
+                    logger.info(f"{prefix} changed")
+                else:
+                    logger.info(f"{prefix} ok (no change)")
+            case "runner_on_failed":
+                logger.error(f"{prefix} failed — {stdout}")
+            case "runner_on_skipped":
+                logger.debug(f"{prefix} skipped")
+            case "runner_on_unreachable":
+                logger.error(f"{prefix} unreachable — {stdout}")
+            case "playbook_on_start":
+                logger.info(f"[{playbook_name}] started")
+            case "playbook_on_stats":
+                logger.info(f"[{playbook_name}] finished")
+            case _:
+                logger.debug(f"{prefix} {stdout}")
+
     result = ansible_runner.run(
         project_dir=playbooks_dir,
         playbook=f"{playbook_name}.yaml",
         extravars=vars,
+        quiet=True,
+        event_handler=_handle_ansible_event,
     )
 
     if result.status == "failed":
@@ -51,5 +109,5 @@ def run_playbooks(config: dict, playbooks_definition: list[dict], playbooks_dir:
         _run_ansible(
             playbook_name=playbook["name"],
             vars=ansible_vars,
-            playbook_dir=playbooks_dir,
+            playbooks_dir=playbooks_dir,
         )

@@ -46,11 +46,17 @@ def _check_list_field(data: dict):
 
 
 def _return_str_field(data: dict):
-    return {data["name"]: (str, Field(strict=data["required"]))}
+    if data["required"]:
+        return {data["name"]: (str, Field(strict=True))}
+    else:
+        return {data["name"]: (str | None, Field(default=None, strict=True))}
 
 
 def _return_int_field(data: dict):
-    return {data["name"]: (int, Field(strict=data["required"]))}
+    if data["required"]:
+        return {data["name"]: (int, Field(strict=True))}
+    else:
+        return {data["name"]: (int | None, Field(default=None, strict=True))}
 
 
 def _parse_key(data: dict):
