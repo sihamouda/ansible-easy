@@ -1,6 +1,6 @@
 [project]
 name = "ansible-easy"
-version = "0.1.0"
+version = "0.0.0"
 description = "package to make creating ansible workflows easy"
 readme = "README.md"
 requires-python = ">=3.12"
@@ -9,11 +9,17 @@ dependencies = [
     "ansible-lint>=26.3.0",
     "ansible-runner>=2.4.3",
     "colorlog>=6.10.1",
-    "psycopg2>=2.9.11",
     "pydantic>=2.12.5",
     "pydantic-settings>=2.13.1",
     "pyyaml>=6.0.3",
 ]
 
 [project.scripts]
-main = "ansible_easy.main:main"
+ansible-easy = "ansible_easy.main:cli"
+
+[tool.hatch.build.targets.wheel]
+packages = ["ansible_easy"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
