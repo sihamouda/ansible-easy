@@ -35,7 +35,7 @@ jobs:
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
           VERSION=$(hatch version)
-          git add pyproject.toml
+          git add ansible_easy/__init__.py
           git commit -m "chore: bump version to $VERSION"
           git tag "v$VERSION"
           git push
