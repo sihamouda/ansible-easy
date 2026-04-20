@@ -1,16 +1,27 @@
 # Table of contents
 
-* [Welcome](README.md)
+* [Overview](README.md)
 
 ## Getting Started
 
+* [Installation](getting-started/installation.md)
 * [Quickstart](getting-started/quickstart.md)
-* [Publish your docs](getting-started/publish-your-docs.md)
 
-## Basics
+## Using ansible-easy
 
-* [Editor](basics/editor.md)
-* [Markdown](basics/markdown.md)
-* [Images & media](basics/images-and-media.md)
-* [Interactive blocks](basics/interactive-blocks.md)
-* [Integrations](basics/integrations.md)
+* [CLI Usage](usage/cli.md)
+* [Python Usage](usage/python.md)
+
+## Concepts
+
+* [How It Works](concepts/how-it-works.md)
+* [Template Format](concepts/template-format.md)
+
+## Reference
+
+* [Template Reference](reference/template-reference.md)
+* [Runtime and Logging](reference/runtime-and-logging.md)
+
+## Examples
+
+* [PostgreSQL Workflow](examples/postgresql.md)
